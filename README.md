@@ -19,9 +19,7 @@ Este projeto é um aplicativo que permite aos usuários criar e gerenciar suas p
 
 - **Linguagem**: Kotlin
 - **IDE**: Android Studio
-- **Framework**: Jetpack Compose (se estiver sendo utilizado)
-- **Banco de Dados**: [Especificar banco de dados, se houver]
-- **Outras tecnologias**: [Especificar outras tecnologias, como bibliotecas ou APIs]
+- **Framework**: Jetpack Compose 
 
 ## Como Executar o Projeto
 
@@ -38,19 +36,4 @@ Este projeto é um aplicativo que permite aos usuários criar e gerenciar suas p
 4. Compile e execute o projeto no Android Studio:
    - Clique no botão "Run" ou utilize o atalho **Shift + F10**.
 
-## Contribuição
 
-1. Faça um fork do projeto.
-2. Crie uma branch para a sua feature:
-   ```bash
-   git checkout -b feature/nome-da-feature
-   ```
-3. Faça o commit das suas alterações:
-   ```bash
-   git commit -m 'Adicionar nova funcionalidade'
-   ```
-4. Envie as alterações para o repositório remoto:
-   ```bash
-   git push origin feature/nome-da-feature
-   ```
-5. Abra um pull request.
