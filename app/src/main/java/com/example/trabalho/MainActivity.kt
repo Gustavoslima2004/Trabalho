@@ -15,22 +15,24 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
             MyApp()
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyApp() {
     var text1 by remember { mutableStateOf(TextFieldValue("")) }
@@ -56,7 +58,6 @@ fun MyApp() {
         modifier = Modifier
             .fillMaxSize()
     ) {
-
         val backgroundImage = if (isDay) {
             R.drawable.background1
         } else {
@@ -76,7 +77,6 @@ fun MyApp() {
                 .padding(16.dp),
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
-
         ) {
             // Snackbar host to display messages
             SnackbarHost(
@@ -97,13 +97,20 @@ fun MyApp() {
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
 
-            // Texto "Metas do dia"
-            Text(
-                text = "Metas do dia",
-                color = Color.White,
-                fontSize = 24.sp,
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
+            Box(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .background(color = Color.Black)
+            ) {
+                Text(
+                    text = "Metas do dia",
+                    color = Color.White,
+                    fontSize = 24.sp,
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(16.dp)
+                )
+            }
 
             // Botões "Dia" e "Noite"
             Row(
@@ -130,55 +137,23 @@ fun MyApp() {
                 }
             }
 
+            val corTexto = if (isDay) Color.Black else Color.White
+
             // Texto e campo de entrada para o horário 1
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .padding(bottom = 16.dp)
-                    .fillMaxWidth()
-            ) {
-                TextField(
-                    value = hour1,
-                    onValueChange = { hour1 = it },
-                    modifier = Modifier
-                        .width(60.dp)
-                        .background(Color.Black, shape = RoundedCornerShape(16.dp))
-                        .clip(RoundedCornerShape(50.dp)),
-                    textStyle = androidx.compose.ui.text.TextStyle(fontSize = 24.sp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "h - am",
-                    color = Color.White,
-                    fontSize = 24.sp
-                )
-            }
+            TimeInputRow(
+                hour = hour1,
+                onHourChange = { hour1 = it },
+                label = "h - am",
+                corTexto = corTexto
+            )
 
             // Texto e campo de entrada para o horário 2
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .padding(bottom = 16.dp)
-                    .fillMaxWidth()
-            ) {
-                TextField(
-                    value = hour2,
-                    onValueChange = { hour2 = it },
-                    modifier = Modifier
-                        .width(60.dp)
-                        .background(Color.Black, shape = RoundedCornerShape(16.dp))
-                        .clip(RoundedCornerShape(50.dp)),
-                    textStyle = androidx.compose.ui.text.TextStyle(fontSize = 24.sp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "h - pm",
-                    color = Color.White,
-                    fontSize = 24.sp
-                )
-            }
+            TimeInputRow(
+                hour = hour2,
+                onHourChange = { hour2 = it },
+                label = "h - am",
+                corTexto = corTexto
+            )
 
             // Box cinza
             Box(
@@ -194,86 +169,74 @@ fun MyApp() {
                     modifier = Modifier.fillMaxSize()
                 ) {
                     // Primeiro conjunto
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        TextField(
-                            value = text1,
-                            onValueChange = { text1 = it },
-                            label = { Text("Enter text 1") },
-                            modifier = Modifier.weight(1f)
-                        )
-                        Spacer(modifier = Modifier.width(16.dp))
-                        Switch(
-                            checked = isChecked1,
-                            onCheckedChange = { isChecked1 = it }
-                        )
-                    }
+                    FieldRow(
+                        text = text1,
+                        onTextChange = { text1 = it },
+                        isChecked = isChecked1,
+                        onCheckedChange = {
+                            isChecked1 = it
+                            if (it) {
+                                coroutineScope.launch {
+                                    snackbarHostState.showSnackbar("Objetivo 1 finalizado")
+                                }
+                            }
+                        },
+                        label = "Objetivo - 1"
+                    )
 
                     Spacer(modifier = Modifier.height(16.dp))
 
                     // Segundo conjunto
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        TextField(
-                            value = text2,
-                            onValueChange = { text2 = it },
-                            label = { Text("Enter text 2") },
-                            modifier = Modifier.weight(1f)
-                        )
-                        Spacer(modifier = Modifier.width(16.dp))
-                        Switch(
-                            checked = isChecked2,
-                            onCheckedChange = { isChecked2 = it }
-                        )
-                    }
+                    FieldRow(
+                        text = text2,
+                        onTextChange = { text2 = it },
+                        isChecked = isChecked2,
+                        onCheckedChange = {
+                            isChecked2 = it
+                            if (it) {
+                                coroutineScope.launch {
+                                    snackbarHostState.showSnackbar("Objetivo 2 finalizado")
+                                }
+                            }
+                        },
+                        label = "Objetivo - 2"
+                    )
 
                     Spacer(modifier = Modifier.height(16.dp))
 
                     // Terceiro conjunto
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        TextField(
-                            value = text3,
-                            onValueChange = { text3 = it },
-                            label = { Text("Enter text 3") },
-                            modifier = Modifier.weight(1f)
-                        )
-                        Spacer(modifier = Modifier.width(16.dp))
-                        Switch(
-                            checked = isChecked3,
-                            onCheckedChange = { isChecked3 = it }
-                        )
-                    }
+                    FieldRow(
+                        text = text3,
+                        onTextChange = { text3 = it },
+                        isChecked = isChecked3,
+                        onCheckedChange = {
+                            isChecked3 = it
+                            if (it) {
+                                coroutineScope.launch {
+                                    snackbarHostState.showSnackbar("Objetivo 3 finalizado")
+                                }
+                            }
+                        },
+                        label = "Objetivo - 3"
+                    )
 
                     Spacer(modifier = Modifier.height(16.dp))
 
                     // Quarto conjunto
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        TextField(
-                            value = text4,
-                            onValueChange = { text4 = it },
-                            label = { Text("Enter text 4") },
-                            modifier = Modifier.weight(1f)
-                        )
-                        Spacer(modifier = Modifier.width(16.dp))
-                        Switch(
-                            checked = isChecked4,
-                            onCheckedChange = { isChecked4 = it }
-                        )
-                    }
+                    FieldRow(
+                        text = text4,
+                        onTextChange = { text4 = it },
+                        isChecked = isChecked4,
+                        onCheckedChange = {
+                            isChecked4 = it
+                            if (it) {
+                                coroutineScope.launch {
+                                    snackbarHostState.showSnackbar("Objetivo 4 finalizado")
+                                }
+                            }
+                        },
+                        label = "Objetivo - 4"
+                    )
                 }
             }
 
@@ -310,6 +273,71 @@ fun MyApp() {
                 Text("Verificar")
             }
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TimeInputRow(hour: TextFieldValue, onHourChange: (TextFieldValue) -> Unit, label: String, corTexto: Color) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .padding(bottom = 16.dp)
+            .fillMaxWidth()
+    ) {
+        TextField(
+            value = hour,
+            onValueChange = { newValue ->
+                if (newValue.text.length <= 2) {
+                    onHourChange(newValue)
+                }
+            },
+            modifier = Modifier
+                .width(60.dp)
+                .clip(RoundedCornerShape(50.dp)),
+            textStyle = TextStyle(
+                fontSize = 24.sp,
+                textAlign = TextAlign.Center
+            ),
+            colors = TextFieldDefaults.textFieldColors(
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            )
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = label,
+            color = corTexto,
+            fontSize = 24.sp
+        )
+    }
+}
+
+@Composable
+fun FieldRow(
+    text: TextFieldValue,
+    onTextChange: (TextFieldValue) -> Unit,
+    isChecked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    label: String
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        TextField(
+            value = text,
+            onValueChange = onTextChange,
+            label = { Text(label) },
+            modifier = Modifier.weight(1f)
+        )
+        Spacer(modifier = Modifier.width(16.dp))
+        Switch(
+            checked = isChecked,
+            onCheckedChange = onCheckedChange
+        )
     }
 }
 
