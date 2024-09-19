@@ -32,6 +32,8 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+//gustavo
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyApp() {
