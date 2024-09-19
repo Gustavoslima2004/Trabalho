@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.trabalho"
+    namespace = "com.example.myapplication"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.trabalho"
+        applicationId = "com.example.myapplication"
         minSdk = 25
         targetSdk = 34
         versionCode = 1
@@ -66,5 +66,4 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
 }
