@@ -48,8 +48,8 @@ fun MyApp() {
     var text4 by remember { mutableStateOf(TextFieldValue("")) }
     var isChecked4 by remember { mutableStateOf(false) }
 
-    var hour1 by remember { mutableStateOf(TextFieldValue("7")) }
-    var hour2 by remember { mutableStateOf(TextFieldValue("7")) }
+    var hour1 by remember { mutableStateOf(TextFieldValue("")) }
+    var hour2 by remember { mutableStateOf(TextFieldValue("")) }
     var isDay by remember { mutableStateOf(true) }
 
     val snackbarHostState = remember { SnackbarHostState() }
@@ -68,8 +68,7 @@ fun MyApp() {
             R.drawable.background2
         }
 
-        // Se der erro é por causa dessa parte do codigo:
-        //
+       
         Crossfade(targetState = backgroundImage) { image ->
             Image(
                 painter = painterResource(id = image),
@@ -78,8 +77,7 @@ fun MyApp() {
                 contentScale = ContentScale.Crop
             )
         }
-        //
-        ////////////////////////////////////////////////
+      
 
         Column(
             modifier = Modifier
@@ -89,14 +87,14 @@ fun MyApp() {
             horizontalAlignment = Alignment.CenterHorizontally
 
         ) {
-            // Snackbar host to display messages
+          
             SnackbarHost(
                 hostState = snackbarHostState,
                 snackbar = { snackbarData ->
                     val backgroundColor = when (snackbarData.visuals.message) {
-                        "Objetivo: 1 Concluído!" -> Color(0xCD3DE211) // Alterado para exibir em verde ao concluir o objetivo 1
-                        "Objetivo: 2 Concluído!" -> Color(0xCD3DE211) // Alterado para exibir em verde ao concluir o objetivo 2
-                        "Objetivo: 3 Concluído!" -> Color(0xCD3DE211) // Alterado para exibir em verde ao concluir o objetivo 3
+                        "Objetivo: 1 Concluído!" -> Color(0xCD3DE211) 
+                        "Objetivo: 2 Concluído!" -> Color(0xCD3DE211) 
+                        "Objetivo: 3 Concluído!" -> Color(0xCD3DE211) 
                         "Objetivo: 4 Concluído!" -> Color(0xCD3DE211)
 
                         "Metas definidas com sucesso!" -> Color(0xCD3DE211)
@@ -113,14 +111,14 @@ fun MyApp() {
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
 
-            // Texto "Metas do dia"
+          
             Box(
                 modifier = Modifier
-                    .width(180.dp) // Largura definida para o campo de texto
+                    .width(180.dp) 
                     .height(50.dp)
                     .background(Color.DarkGray, shape = RoundedCornerShape(10.dp))
                     .clip(RoundedCornerShape(50.dp)),
-                contentAlignment = Alignment.Center // Centraliza o conteúdo
+                contentAlignment = Alignment.Center 
             ) {
                 Text(
                     text = "Metas do dia: ",
@@ -164,7 +162,7 @@ fun MyApp() {
 
 
 
-            // Texto e campo de entrada para o horário 1
+
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -175,25 +173,25 @@ fun MyApp() {
             ) {
                 Box(
                     modifier = Modifier
-                        .width(60.dp) // Largura definida para o campo de texto
-                        .height(60.dp) // Definindo altura para manter proporção
+                        .width(60.dp) 
+                        .height(60.dp) 
                         .background(Color.LightGray, shape = RoundedCornerShape(100.dp))
                         .clip(RoundedCornerShape(50.dp)),
-                    contentAlignment = Alignment.Center // Centraliza o conteúdo
+                    contentAlignment = Alignment.Center 
                 ) {
                     BasicTextField(
-                        value = hour1.text.padStart(2, '0'), // Garante que tenha dois dígitos
+                        value = hour1.text.padStart(2, '0'),
                         onValueChange = {
-                            val formatted = it.filter { char -> char.isDigit() }.take(2) // Limita a dois dígitos numéricos
+                            val formatted = it.filter { char -> char.isDigit() }.take(2) 
                             hour1 = TextFieldValue(formatted)
                         },
                         textStyle = androidx.compose.ui.text.TextStyle(
                             fontSize = 24.sp,
-                            color = Color.Black, // Ajuste de cor
-                            textAlign = TextAlign.Center // Centraliza o texto dentro do campo
+                            color = Color.Black, 
+                            textAlign = TextAlign.Center 
                         ),
-                        singleLine = true, // Permite apenas uma linha
-                        modifier = Modifier.fillMaxWidth() // Preenche o Box para centralização
+                        singleLine = true, 
+                        modifier = Modifier.fillMaxWidth() 
                     )
                 }
                 Spacer(modifier = Modifier.width(8.dp))
@@ -205,7 +203,7 @@ fun MyApp() {
                 )
             }
 
-// Para o segundo horário
+
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
@@ -215,25 +213,25 @@ fun MyApp() {
             ) {
                 Box(
                     modifier = Modifier
-                        .width(60.dp) // Largura definida para o campo de texto
-                        .height(60.dp) // Definindo altura para manter proporção
+                        .width(60.dp) 
+                        .height(60.dp)
                         .background(Color.LightGray, shape = RoundedCornerShape(100.dp))
                         .clip(RoundedCornerShape(50.dp)),
-                    contentAlignment = Alignment.Center // Centraliza o conteúdo
+                    contentAlignment = Alignment.Center 
                 ) {
                     BasicTextField(
-                        value = hour2.text.padStart(2, '0'), // Garante que tenha dois dígitos
+                        value = hour2.text.padStart(2, '0'), 
                         onValueChange = {
-                            val formatted = it.filter { char -> char.isDigit() }.take(2) // Limita a dois dígitos numéricos
+                            val formatted = it.filter { char -> char.isDigit() }.take(2) 
                             hour2 = TextFieldValue(formatted)
                         },
                         textStyle = androidx.compose.ui.text.TextStyle(
                             fontSize = 24.sp,
-                            color = Color.Black, // Ajuste de cor
-                            textAlign = TextAlign.Center // Centraliza o texto dentro do campo
+                            color = Color.Black, 
+                            textAlign = TextAlign.Center 
                         ),
-                        singleLine = true, // Permite apenas uma linha
-                        modifier = Modifier.fillMaxWidth() // Preenche o Box para centralização
+                        singleLine = true, 
+                        modifier = Modifier.fillMaxWidth()
                     )
                 }
                 Spacer(modifier = Modifier.width(8.dp))
@@ -246,7 +244,7 @@ fun MyApp() {
 
 
 
-            // Box cinza
+          
             Box(
                 modifier = Modifier
                     .width(350.dp)
@@ -259,7 +257,7 @@ fun MyApp() {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    // Primeiro conjunto
+                  
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -276,7 +274,7 @@ fun MyApp() {
                         Switch(
                             checked = isChecked1,
                             onCheckedChange = {
-                                if (isMetasDefinidas) { // Permite ativar o switch somente se as metas foram definidas
+                                if (isMetasDefinidas) {
                                     isChecked1 = it
                                     if (it) {
                                         coroutineScope.launch {
@@ -290,7 +288,6 @@ fun MyApp() {
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // Segundo conjunto
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -306,7 +303,7 @@ fun MyApp() {
                         Switch(
                             checked = isChecked2,
                             onCheckedChange = {
-                                if (isMetasDefinidas) { // Permite ativar o switch somente se as metas foram definidas
+                                if (isMetasDefinidas) { 
                                     isChecked2 = it
                                     if (it) {
                                         coroutineScope.launch {
@@ -320,7 +317,7 @@ fun MyApp() {
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // Terceiro conjunto
+                  
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -336,7 +333,7 @@ fun MyApp() {
                         Switch(
                             checked = isChecked3,
                             onCheckedChange = {
-                                if (isMetasDefinidas) { // Permite ativar o switch somente se as metas foram definidas
+                                if (isMetasDefinidas) { 
                                     isChecked3 = it
                                     if (it) {
                                         coroutineScope.launch {
@@ -350,7 +347,7 @@ fun MyApp() {
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // Quarto conjunto
+                   
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -366,7 +363,7 @@ fun MyApp() {
                         Switch(
                             checked = isChecked4,
                             onCheckedChange = {
-                                if (isMetasDefinidas) { // Permite ativar o switch somente se as metas foram definidas
+                                if (isMetasDefinidas) {
                                     isChecked4 = it
                                     if (it) {
                                         coroutineScope.launch {
@@ -382,7 +379,7 @@ fun MyApp() {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Botão de verificação
+           
             Button(
                 onClick = {
                     val hour1Int = hour1.text.toIntOrNull()
@@ -404,15 +401,15 @@ fun MyApp() {
                         else -> {
                             coroutineScope.launch {
                                 snackbarHostState.showSnackbar("Metas definidas com sucesso!")
-                                isMetasDefinidas = true // Atualiza o estado para permitir ativar os switches
+                                isMetasDefinidas = true 
                             }
                         }
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF03A9F4), // Cor de fundo do botão
-                    contentColor = Color.White // Cor do texto do botão
+                    containerColor = Color(0xFF03A9F4), 
+                    contentColor = Color.White
                 )
             ) {
                 Text("Definir Metas")
@@ -426,8 +423,5 @@ fun MyApp() {
 fun DefaultPreview() {
     MyApp()
 }
-///////////////////////
-/////////////////////
-////////////////////
 
 
