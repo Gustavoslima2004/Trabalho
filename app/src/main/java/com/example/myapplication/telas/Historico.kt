@@ -112,24 +112,34 @@ fun HistoricoScreen(onBack: () -> Unit) {
                         }
                     )
                 }
-
+val today = Calendar.getInstance()
+val currentYear = today.get(Calendar.YEAR)
+val currentMonth = today.get(Calendar.MONTH)
+            val currentDay = today.get(Calendar.DAY_OF_MONTH)
                 val daysInMonth = getDaysInMonth(selectedYear, selectedMonth)
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(7),
-                    contentPadding = PaddingValues(4.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    items(daysInMonth.size) { index ->
-                        DayItem(
-                            day = daysInMonth[index],
-                            isSelected = daysInMonth[index] == selectedDay,
-                            onClick = {
-                                selectedDay = daysInMonth[index]
-                                selectedDate = "${daysInMonth[index].toString().padStart(2, '0')}/${(selectedMonth + 1).toString().padStart(2, '0')}/$selectedYear"
-                            }
-                        )
-                    }
+               LazyVerticalGrid(
+    columns = GridCells.Fixed(7),
+    contentPadding = PaddingValues(4.dp),
+    modifier = Modifier.fillMaxWidth()
+) {
+    items(daysInMonth.size) { index ->
+        val isDisabled = selectedYear < currentYear ||
+                (selectedYear == currentYear && selectedMonth < currentMonth) ||
+                (selectedYear == currentYear && selectedMonth == currentMonth && daysInMonth[index] < currentDay)
+
+        DayItem(
+            day = daysInMonth[index],
+            isSelected = daysInMonth[index] == selectedDay && !isDisabled,
+            isDisabled = isDisabled,
+            onClick = {
+                if (!isDisabled) {
+                    selectedDay = daysInMonth[index]
+                    selectedDate = "${daysInMonth[index].toString().padStart(2, '0')}/${(selectedMonth + 1).toString().padStart(2, '0')}/$selectedYear"
                 }
+            }
+        )
+    }
+}
 
                 // Adicionar o botão "Hoje" ao lado do último dia
                 Spacer(modifier = Modifier.height(16.dp))
@@ -178,21 +188,25 @@ fun HistoricoScreen(onBack: () -> Unit) {
 }
 
 @Composable
-fun DayItem(day: Int, isSelected: Boolean, onClick: () -> Unit) {
+fun DayItem(day: Int, isSelected: Boolean, isDisabled: Boolean, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .size(50.dp)
             .padding(4.dp)
             .background(
-                if (isSelected) Color.Blue else Color.LightGray,
+                when {
+                    isDisabled -> Color.Gray
+                    isSelected -> Color.Blue
+                    else -> Color.LightGray
+                },
                 shape = MaterialTheme.shapes.small
             )
-            .clickable(onClick = onClick),
+            .clickable(enabled = !isDisabled, onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = day.toString(),
-            color = Color.White,
+            color = if (isDisabled) Color.DarkGray else Color.White,
             fontSize = 20.sp,
             textAlign = TextAlign.Center
         )
