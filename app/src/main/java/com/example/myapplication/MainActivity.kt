@@ -9,6 +9,7 @@ import com.example.myapplication.telas.CriarContaScreen
 import com.example.myapplication.telas.HistoricoScreen
 import com.example.myapplication.telas.LoginScreen
 import com.example.myapplication.telas.MetasScreen
+import com.example.myapplication.telas.SplashScreen
 
 
 class MainActivity : ComponentActivity() {
@@ -26,28 +27,19 @@ class MainActivity : ComponentActivity() {
 // Composable principal que gerencia as telas
 @Composable
 fun MyApp(gerenciaUsuario: GerenciaUsuario) {
-
-
-
-    //
-    //
-    var currentScreen by remember { mutableStateOf<Screen>(Screen.Historico)
-    /*Altere Login para Metas para deixar a tela inicial como o app de metas*/ }
-    //
-    //
-
+    var currentScreen by remember { mutableStateOf<Screen>(Screen.Splash) } // Inicia na SplashScreen
     var username by remember { mutableStateOf("") } // Armazena o nome de usuário
     var password by remember { mutableStateOf("") } // Armazena a senha
     var errorMessage by remember { mutableStateOf("") } // Armazena a mensagem de erro
 
     when (currentScreen) {
+        is Screen.Splash -> SplashScreen(onSplashFinished = { currentScreen = Screen.Metas }) // Muda para a tela inicial após a splash
         is Screen.Login -> LoginScreen(
             username = username,
             password = password,
             onUsernameChange = { username = it },
             onPasswordChange = { password = it },
             onLoginSuccess = {
-                // Verifica se o usuário existe
                 if (username.isBlank() || password.isBlank()) {
                     errorMessage = "Por favor, preencha todos os campos."
                 } else if (!gerenciaUsuario.usuarioExiste(username)) {
@@ -56,11 +48,11 @@ fun MyApp(gerenciaUsuario: GerenciaUsuario) {
                     errorMessage = "Senha incorreta."
                 } else {
                     currentScreen = Screen.Metas
-                    errorMessage = "" // Limpa a mensagem de erro
+                    errorMessage = ""
                 }
             },
             onCreateAccount = { currentScreen = Screen.CriarConta },
-            errorMessage = errorMessage // Passa a mensagem de erro para a tela de login
+            errorMessage = errorMessage
         )
         is Screen.Metas -> MetasScreen(
             onGoToHistorico = { currentScreen = Screen.Historico },
@@ -68,16 +60,19 @@ fun MyApp(gerenciaUsuario: GerenciaUsuario) {
         )
         is Screen.Historico -> HistoricoScreen(onBack = { currentScreen = Screen.Metas })
         is Screen.CriarConta -> CriarContaScreen(
-            gerenciaUsuario = gerenciaUsuario, // Passando gerenciaUsuario para a tela de criação de conta
+            gerenciaUsuario = gerenciaUsuario,
             onBack = { currentScreen = Screen.Login }
         )
     }
 }
 
+
 // Definição da classe Screen para controle de navegação
 sealed class Screen {
+    object Splash : Screen() // Tela de splash
     object Login : Screen()
     object Metas : Screen()
     object Historico : Screen()
-    object CriarConta : Screen() // Nova tela para criação de conta
+    object CriarConta : Screen()
 }
+
