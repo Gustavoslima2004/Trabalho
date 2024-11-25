@@ -1,11 +1,13 @@
 package com.example.myapplication.telas
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.input.TextFieldValue
@@ -22,65 +24,72 @@ fun LoginScreen(
     onCreateAccount: () -> Unit,
     errorMessage: String // Adicionado parâmetro para mensagem de erro
 ) {
-    Column(
+
+    Box( // Use um Box como container para ocupar toda a tela
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+            .background(color = Color(0xFF1C2023)) // Fundo aplicado ao Box
     ) {
-        TextField(
-            value = username,
-            onValueChange = onUsernameChange,
-            label = { Text("Nome de Usuário") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        TextField(
-            value = password,
-            onValueChange = onPasswordChange,
-            label = { Text("Senha") },
-            modifier = Modifier.fillMaxWidth(),
-            visualTransformation = PasswordVisualTransformation()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Exibir mensagem de erro, se existir
-        if (errorMessage.isNotEmpty()) {
-            Text(
-                text = errorMessage,
-                color = MaterialTheme.colorScheme.error,
-                modifier = Modifier.padding(vertical = 8.dp)
-            )
-        }
-
-        Button(
-            onClick = {
-                if (username.isNotBlank() && password.isNotBlank()) {
-                    onLoginSuccess() // Chama a função de sucesso de login
-                }
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Entrar")
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Hiperlink para criar conta
-        Text(
-            text = "Criar Conta",
-            color = MaterialTheme.colorScheme.primary,
+        Column(
             modifier = Modifier
-                .clickable { onCreateAccount() }
-                .padding(8.dp),
-            style = MaterialTheme.typography.bodyMedium.copy(
-                textDecoration = TextDecoration.None
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            TextField(
+                value = username,
+                onValueChange = onUsernameChange,
+                label = { Text("Nome de Usuário") },
+                modifier = Modifier.fillMaxWidth()
             )
-        )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            TextField(
+                value = password,
+                onValueChange = onPasswordChange,
+                label = { Text("Senha") },
+                modifier = Modifier.fillMaxWidth(),
+                visualTransformation = PasswordVisualTransformation()
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Exibir mensagem de erro, se existir
+            if (errorMessage.isNotEmpty()) {
+                Text(
+                    text = errorMessage,
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
+            }
+
+            Button(
+                onClick = {
+                    if (username.isNotBlank() && password.isNotBlank()) {
+                        onLoginSuccess() // Chama a função de sucesso de login
+                    }
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Entrar")
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Hiperlink para criar conta
+            Text(
+                text = "Criar Conta",
+                color = Color.Blue,
+                modifier = Modifier
+                    .clickable { onCreateAccount() }
+                    .padding(8.dp),
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    textDecoration = TextDecoration.None
+                )
+            )
+        }
     }
 }
 

@@ -23,11 +23,13 @@ import com.example.myapplication.R
 import kotlinx.coroutines.launch
 import com.example.myapplication.bancoDados.HelperDatas
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import java.text.SimpleDateFormat
 
 import java.util.*
 
 @Composable
+
 fun MetasScreen(onGoToHistorico: () -> Unit, onLogout: () -> Unit) {
 
 
@@ -58,9 +60,9 @@ fun MetasScreen(onGoToHistorico: () -> Unit, onLogout: () -> Unit) {
     ) {
 
         val backgroundImage = if (isDay) {
-            R.drawable.background1
+            R.drawable.dia
         } else {
-            R.drawable.background2
+            R.drawable.noite
         }
 
         Crossfade(targetState = backgroundImage) { image ->
@@ -106,45 +108,46 @@ fun MetasScreen(onGoToHistorico: () -> Unit, onLogout: () -> Unit) {
 
 
 
-                    Box(
-                        modifier = Modifier
-                            .width(350.dp) // Largura da Box
-                            .height(60.dp) // Altura da Box
-                            .background(Color.Gray, shape = RoundedCornerShape(10.dp)) // Box com borda arredondada
-                            .padding(16.dp), // Padding interno para espaçamento
-                        contentAlignment = Alignment.Center // Centraliza o conteúdo dentro da Box
-                    ) {
-                        // Obter o contexto para usar a função do HelperDatas
-                        val context = LocalContext.current
-                        val savedDate = HelperDatas.getSavedDate(context)
+            Box(
+                modifier = Modifier
+                    .width(350.dp) // Largura da Box
+                    .height(60.dp) // Altura da Box
+                    .background(
+                        Color.Gray,
+                        shape = RoundedCornerShape(10.dp)
+                    ) // Box com borda arredondada
+                    .padding(16.dp), // Padding interno para espaçamento
+                contentAlignment = Alignment.Center // Centraliza o conteúdo dentro da Box
+            ) {
+                // Obter o contexto para usar a função do HelperDatas
+                val context = LocalContext.current
+                val savedDate = HelperDatas.getSavedDate(context)
 
-                        // Se a data salva não estiver disponível, usamos a data atual
-                        val calendar = if (savedDate.isNotEmpty()) {
-                            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                            val date = sdf.parse(savedDate) ?: Calendar.getInstance().time
-                            Calendar.getInstance().apply { time = date }
-                        } else {
-                            Calendar.getInstance() // Data atual
-                        }
+                // Se a data salva não estiver disponível, usamos a data atual
+                val calendar = if (savedDate.isNotEmpty()) {
+                    val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                    val date = sdf.parse(savedDate) ?: Calendar.getInstance().time
+                    Calendar.getInstance().apply { time = date }
+                } else {
+                    Calendar.getInstance() // Data atual
+                }
 
-                        // Exibir a data formatada na Box
-                        Text(
-                            text = String.format(
-                                Locale.getDefault(), // Usando o Locale do dispositivo para formatação
-                                "%02d/%02d/%d",
-                                calendar.get(Calendar.DAY_OF_MONTH),
-                                calendar.get(Calendar.MONTH) + 1, // Mês ajustado para o padrão 1-12
-                                calendar.get(Calendar.YEAR)
-                            ),
-                            color = Color.White, // Cor do texto
-                            fontSize = 20.sp, // Tamanho do texto
-                            fontWeight = FontWeight.Bold // Negrito para destacar a data
-                        )
-                    }
+                // Exibir a data formatada na Box
+                Text(
+                    text = String.format(
+                        Locale.getDefault(), // Usando o Locale do dispositivo para formatação
+                        "%02d/%02d/%d",
+                        calendar.get(Calendar.DAY_OF_MONTH),
+                        calendar.get(Calendar.MONTH) + 1, // Mês ajustado para o padrão 1-12
+                        calendar.get(Calendar.YEAR)
+                    ),
+                    color = Color.White, // Cor do texto
+                    fontSize = 20.sp, // Tamanho do texto
+                    fontWeight = FontWeight.Bold // Negrito para destacar a data
+                )
+            }
 
             Spacer(modifier = Modifier.height(10.dp))
-
-
 
 
             // Botões "Dia" e "Noite"
@@ -157,7 +160,7 @@ fun MetasScreen(onGoToHistorico: () -> Unit, onLogout: () -> Unit) {
                 Button(
                     onClick = { isDay = true },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = if (isDay) Color(0xFF0A98D6) else Color(0xFFFFE91A)
+                        containerColor = if (isDay) Color(0xFF0A98D6) else Color(0xFFD1A865)
                     )
                 ) {
                     Text("Dia")
@@ -165,21 +168,20 @@ fun MetasScreen(onGoToHistorico: () -> Unit, onLogout: () -> Unit) {
                 Button(
                     onClick = { isDay = false },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = if (!isDay) Color(0xF30A98D6) else Color(0xFF1E2329)
+                        containerColor = if (!isDay) Color(0xF30A98D6) else Color(0xFF414749)
                     )
                 ) {
                     Text("Noite")
                 }
             }
             val texto = if (isDay) {
-                Color.Black
-            }else{
                 Color.White
+            } else {
+                Color.Black
             }
 
             val day = if (isDay) "am" else "pm"
             val night = if (isDay) "pm" else "am"
-
 
 
             // Texto e campo de entrada para o horário 1
@@ -202,7 +204,8 @@ fun MetasScreen(onGoToHistorico: () -> Unit, onLogout: () -> Unit) {
                     BasicTextField(
                         value = hour1.text.padStart(2, '0'), // Garante que tenha dois dígitos
                         onValueChange = {
-                            val formatted = it.filter { char -> char.isDigit() }.take(2) // Limita a dois dígitos numéricos
+                            val formatted = it.filter { char -> char.isDigit() }
+                                .take(2) // Limita a dois dígitos numéricos
                             hour1 = TextFieldValue(formatted)
                         },
                         textStyle = androidx.compose.ui.text.TextStyle(
@@ -217,12 +220,11 @@ fun MetasScreen(onGoToHistorico: () -> Unit, onLogout: () -> Unit) {
                 Spacer(modifier = Modifier.width(8.dp))
 
                 Text(
-                    text = "h - $day" ,
+                    text = "h - $day",
                     color = texto,
                     fontSize = 24.sp
                 )
             }
-
 
 
 // Para o segundo horário
@@ -244,7 +246,8 @@ fun MetasScreen(onGoToHistorico: () -> Unit, onLogout: () -> Unit) {
                     BasicTextField(
                         value = hour2.text.padStart(2, '0'), // Garante que tenha dois dígitos
                         onValueChange = {
-                            val formatted = it.filter { char -> char.isDigit() }.take(2) // Limita a dois dígitos numéricos
+                            val formatted = it.filter { char -> char.isDigit() }
+                                .take(2) // Limita a dois dígitos numéricos
                             hour2 = TextFieldValue(formatted)
                         },
                         textStyle = androidx.compose.ui.text.TextStyle(
@@ -263,7 +266,6 @@ fun MetasScreen(onGoToHistorico: () -> Unit, onLogout: () -> Unit) {
                     fontSize = 24.sp
                 )
             }
-
 
 
             // Box cinza
@@ -289,7 +291,8 @@ fun MetasScreen(onGoToHistorico: () -> Unit, onLogout: () -> Unit) {
                             value = text1,
                             onValueChange = { text1 = it },
                             label = { Text("Objetivo: 1") },
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier
+                                .weight(1f)
                                 .background(Color.Black)
                         )
                         Spacer(modifier = Modifier.width(16.dp))
@@ -437,19 +440,60 @@ fun MetasScreen(onGoToHistorico: () -> Unit, onLogout: () -> Unit) {
             ) {
                 Text("Definir Metas")
             }
-            Row(
+
+            // Barra preta com ícones na parte inferior
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp, bottom = 16.dp), // Pode ajustar o padding conforme necessário
-                horizontalArrangement = Arrangement.SpaceBetween
+                    .fillMaxWidth() // Preenche toda a largura da tela
+                    .background(Color.Black) // Fundo preto
+                    .height(100.dp) // Aumente a altura para ajustar a barra
+                    .padding(vertical = 16.dp)
             ) {
-                Button(onClick = onGoToHistorico) {
-                    Text("Ver Histórico")
-                }
-                Button(onClick = onLogout) {
-                    Text("Logout")
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp), // Espaçamento lateral
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically // Centraliza os ícones verticalmente
+                ) {
+                    // Botão de histórico com ícone
+                    IconButton(onClick = onGoToHistorico) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.historico), // Verifique se o recurso existe
+                            contentDescription = "Histórico",
+                            tint = Color.Blue // Ícone com cor branca para contraste
+                        )
+                    }
+
+                    // Botão de logout com ícone
+                    IconButton(onClick = onLogout) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.logout), // Verifique se o recurso existe
+                            contentDescription = "Logout",
+                            tint = Color.Blue // Ícone com cor branca para contraste
+                        )
+                    }
                 }
             }
+
         }
     }
 }
+@Preview(
+    showSystemUi = true,
+    showBackground = true,
+    name = "Metas Screen Preview",
+    widthDp = 411, // Largura comum para dispositivos
+    heightDp = 891 // Altura comum para dispositivos
+)
+@Composable
+fun PreviewMetasScreen() {
+    MetasScreen(
+        onGoToHistorico = { /* Ação fictícia: Ir para histórico */ },
+        onLogout = { /* Ação fictícia: Logout */ }
+    )
+}
+
+
+
+
