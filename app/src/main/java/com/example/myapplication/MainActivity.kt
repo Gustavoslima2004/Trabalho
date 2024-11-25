@@ -58,7 +58,10 @@ fun MyApp(gerenciaUsuario: GerenciaUsuario) {
             onGoToHistorico = { currentScreen = Screen.Historico },
             onLogout = { currentScreen = Screen.Login }
         )
-        is Screen.Historico -> HistoricoScreen(onBack = { currentScreen = Screen.Metas })
+        is Screen.Historico -> HistoricoScreen(
+            onBack = { currentScreen = Screen.Metas },
+            onLogout = { currentScreen = Screen.Login }
+        )
         is Screen.CriarConta -> CriarContaScreen(
             gerenciaUsuario = gerenciaUsuario,
             onBack = { currentScreen = Screen.Login }

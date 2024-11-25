@@ -16,6 +16,7 @@ import com.example.myapplication.R
 import kotlinx.coroutines.delay
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun SplashScreen(onSplashFinished: () -> Unit) {
@@ -27,7 +28,7 @@ fun SplashScreen(onSplashFinished: () -> Unit) {
             targetValue = 1f,
             animationSpec = tween(durationMillis = 1000) // Duração de 1 segundo
         )
-        delay(1500) // Manter na tela por 1.5 segundos
+        delay(1000) // Manter na tela por 1 segundos
         onSplashFinished() // Finaliza a splash e navega para a próxima tela
     }
 
@@ -37,9 +38,9 @@ fun SplashScreen(onSplashFinished: () -> Unit) {
             .background(
                 Brush.linearGradient(
                     colorStops = arrayOf(
-                        0.0f to Color(0xFF001F54), // Azul escuro no início (0%)
-                        0.3f to Color(0xFF001F54), // Azul escuro até 70%
-                        1.0f to Color(0xFFFFA500)  // Amarelo queimado no final (100%)
+                        0.2f to Color(0xFF001F54), // Azul escuro no início (0%)
+                        0.5f to Color(0xFF1C2023), // Azul escuro até 70%
+                        1.0f to Color(0xFFD1A865)  // Amarelo queimado no final (100%)
                     ),
                     start = Offset(0f, 0f), // Começa no lado esquerdo
                     end = Offset(Float.POSITIVE_INFINITY, 0f) // Termina no lado direito
@@ -55,4 +56,9 @@ fun SplashScreen(onSplashFinished: () -> Unit) {
                 .scale(scale.value) // Animação de escala
         )
     }
+}
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun PreviewSplashScreen() {
+    SplashScreen(onSplashFinished = {})
 }
